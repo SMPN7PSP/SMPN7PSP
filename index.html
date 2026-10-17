@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pengumpulan Tugas</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f8f7;--ink:#12302d;--teal:#0e6b63;--mint:#d9ede9;--sun:#f4b942;--line:#cfe0dc;--warn:#c8650b;--bad:#b3261e;--mut:#5b7471;--r:14px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 'Plus Jakarta Sans',system-ui,sans-serif}
+#app{max-width:520px;margin:0 auto;min-height:100vh;padding:0 18px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:2px solid var(--ink)}
+.top b{font-weight:800;font-size:15px}
+.top button{border:0;background:none;color:var(--teal);font:600 14px inherit;font-family:inherit;padding:6px 0;cursor:pointer}
+.s{display:none;padding-top:22px}.s.on{display:block}
+h1{font-size:34px;line-height:1.1;font-weight:800;margin:6px 0 10px;letter-spacing:-.02em}
+h2{font-size:23px;line-height:1.2;margin:4px 0 14px;font-weight:800}
+h3{font-size:19px;margin:0 0 8px;font-weight:800}
+p{margin:0 0 12px}.mut{color:var(--mut);font-size:14px}
+label{display:block;font-weight:600;font-size:14px;margin:0 0 14px}
+input,select,textarea{display:block;width:100%;margin-top:6px;padding:13px 14px;font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:10px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid var(--sun);outline-offset:1px}
+textarea{resize:vertical;min-height:70px}
+.btn{display:block;width:100%;padding:14px 16px;border:2px solid var(--teal);background:var(--teal);color:#fff;border-radius:12px;font:700 16px inherit;font-family:inherit;cursor:pointer;text-align:center}
+.btn.ghost{background:#fff;color:var(--teal)}.btn.sun{background:var(--sun);border-color:var(--sun);color:var(--ink)}
+.btn.warn{background:var(--warn);border-color:var(--warn)}.btn.sm{display:inline-block;width:auto;padding:8px 14px;font-size:14px;margin-top:8px}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:10px;margin-top:14px}.row .btn{flex:1}
+.stack>*+*{margin-top:12px}
+.menu{display:block;width:100%;text-align:left;padding:18px;border-radius:var(--r);border:2px solid var(--ink);background:#fff;font:inherit;cursor:pointer;color:var(--ink)}
+.menu b{display:block;font-size:19px;font-weight:800}.menu span{font-size:14px;color:var(--mut)}
+.menu.pri{background:var(--teal);border-color:var(--teal);color:#fff}.menu.pri span{color:#cfe9e5}
+.menu.min{border-style:dashed;padding:12px 18px}.menu.min b{font-size:16px}
+.steps{margin-bottom:18px;font-size:13px;font-weight:600;color:var(--mut)}
+.steps i{display:block;height:6px;background:var(--mint);border-radius:9px;margin-top:6px;overflow:hidden}.steps b{display:block;height:100%;background:var(--teal);border-radius:9px}
+.pin{display:flex;gap:8px;align-items:stretch}.pin input{flex:1;letter-spacing:.3em;font-weight:700}
+.eye{border:1.5px solid var(--line);background:#fff;border-radius:10px;margin-top:6px;padding:0 12px;font:600 13px inherit;font-family:inherit;color:var(--teal);cursor:pointer}
+.ov{position:fixed;inset:0;background:rgba(18,48,45,.6);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:12px}
+.box{background:#fff;width:100%;max-width:480px;border-radius:18px;padding:22px;max-height:90vh;overflow:auto}
+.big{font-size:19px;font-weight:800;line-height:1.35;background:var(--mint);border-radius:10px;padding:12px 14px}
+.err{color:var(--bad);font-weight:600;font-size:14px}
+.note{border:1.5px solid var(--warn);border-radius:12px;padding:12px;margin-bottom:10px;background:#fff7ee}
+.warnbox{background:#fff7ee;border:1.5px solid var(--warn);border-radius:12px;padding:12px;font-size:14px;margin:12px 0 0}
+dl{display:grid;grid-template-columns:90px 1fr;gap:4px 10px;margin:0}dt{color:var(--mut);font-size:14px}dd{margin:0;font-weight:600}
+.thumbs{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 14px}
+.th{position:relative;width:86px;height:86px;border-radius:10px;overflow:hidden;border:1.5px solid var(--line)}
+.th img{width:100%;height:100%;object-fit:cover}.th button{position:absolute;top:3px;right:3px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(18,48,45,.85);color:#fff;font-size:16px;line-height:1}
+.add{width:86px;height:86px;border:2px dashed var(--teal);border-radius:10px;background:#fff;color:var(--teal);font:700 13px inherit;font-family:inherit;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer}
+.sum{background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:16px}
+.spin{width:54px;height:54px;border:6px solid var(--mint);border-top-color:var(--teal);border-radius:50%;animation:sp 0.9s linear infinite;margin:40px auto 18px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:3s}}
+.stamp{display:inline-block;border:4px solid var(--teal);color:var(--teal);border-radius:12px;padding:6px 16px;font-weight:800;font-size:26px;transform:rotate(-4deg);margin:6px 0 14px}
+.card{display:flex;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px;width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.card.st-belum{border-left:6px solid var(--teal)}.card.st-perbaikan{border-left:6px solid var(--warn);background:#fff7ee}.card.st-nilai{border-left:6px solid var(--line)}
+.card .ph{flex:0 0 64px;height:64px;border-radius:8px;background:var(--mint);overflow:hidden}.card .ph img{width:100%;height:100%;object-fit:cover}
+.card .in{flex:1;min-width:0}.card b{display:block}.card small{color:var(--mut)}
+.badge{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--mint);color:var(--teal);margin-top:4px}
+.badge.p{background:#ffe7cf;color:var(--warn)}.badge.n{background:var(--ink);color:#fff}
+.kelas{display:flex;justify-content:space-between;align-items:center;width:100%;background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px;margin-bottom:10px;font:inherit;color:var(--ink);cursor:pointer}
+.kelas b{font-size:19px}.kelas span{font-size:14px;font-weight:600;color:var(--teal)}.kelas span.w{color:var(--warn)}
+.car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;margin-bottom:6px}
+.car img{flex:0 0 100%;scroll-snap-align:center;max-height:55vh;object-fit:contain;background:#0d1f1d;border-radius:12px;min-height:160px}
+.zoom{position:fixed;inset:0;background:#000;z-index:80;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.zoom img{max-width:100%;max-height:100%;touch-action:none;user-select:none}
+.zoom .x{position:absolute;top:14px;right:14px;background:#fff;border:0;border-radius:10px;padding:10px 16px;font:700 15px inherit;font-family:inherit}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;z-index:120;font-weight:600;font-size:14px;max-width:90%;display:none;text-align:center}
+#busy{position:fixed;inset:0;background:rgba(243,248,247,.8);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;font-weight:700}
+#busy .spin{margin:0 0 12px}
+.radio{display:flex;gap:10px;align-items:flex-start;font-weight:600;margin:0 0 10px}.radio input{width:20px;margin:3px 0 0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top"><b>Tugas Kelas</b><button id="homeBtn" hidden onclick="home()">Beranda</button></div>
+
+  <!-- BERANDA -->
+  <section class="s on" id="home">
+    <h1>Kumpulkan tugas, cek nilaimu.</h1>
+    <p class="mut">Pilih yang kamu butuhkan.</p>
+    <div id="tutup" class="warnbox" hidden>Pengumpulan tugas sedang ditutup.</div>
+    <div class="stack" style="margin-top:16px">
+      <button class="menu pri" onclick="mulai('kirim')"><b>Kirim Tugas</b><span>Foto tugasmu, lalu kirim ke guru</span></button>
+      <button class="menu" onclick="mulai('nilai')"><b>Lihat Nilai</b><span>Cek nilai dan status semua tugasmu</span></button>
+      <button class="menu min" onclick="guruAwal()"><b>Mode Guru</b><span>Khusus guru, memakai PIN</span></button>
+    </div>
+  </section>
+
+  <!-- IDENTITAS (kirim & nilai) -->
+  <section class="s" id="p1">
+    <div class="steps" id="st1"><span>Langkah 1 dari 4</span><i><b style="width:25%"></b></i></div>
+    <h2 id="t1">Siapa kamu?</h2>
+    <label>Nama lengkap<input id="nama" autocomplete="off" maxlength="60" placeholder="Contoh: Budi Santoso"></label>
+    <p class="mut" style="margin-top:-6px">Tulis nama yang sama persis seperti sebelumnya.</p>
+    <label>Kelas<select id="kelas"></select></label>
+    <button class="btn" onclick="lanjut1()">Lanjut</button>
+  </section>
+
+  <!-- MAPEL & GURU -->
+  <section class="s" id="p2">
+    <div class="steps"><span>Langkah 2 dari 4</span><i><b style="width:50%"></b></i></div>
+    <h2>Tugas apa?</h2>
+    <label>Mata pelajaran<select id="mapel"></select></label>
+    <label>Nama guru<select id="guru"></select></label>
+    <div class="row"><button class="btn ghost" onclick="go(1)">Kembali</button><button class="btn" onclick="lanjut2()">Lanjut</button></div>
+  </section>
+
+  <!-- UNGGAH -->
+  <section class="s" id="p3">
+    <div class="steps"><span>Langkah 3 dari 4</span><i><b style="width:75%"></b></i></div>
+    <h2>Unggah foto tugas</h2>
+    <div class="sum" id="ringkas"></div>
+    <div class="thumbs" id="thumbs"></div>
+    <input type="file" id="file" accept="image/*" multiple hidden>
+    <p class="mut" id="infoFoto"></p>
+    <label>Catatan (boleh dikosongkan)<textarea id="catatan" maxlength="150" placeholder="Contoh: soal nomor 1 sampai 5"></textarea></label>
+    <div class="row"><button class="btn ghost" onclick="go(2)">Kembali</button><button class="btn" onclick="kirim()">Kirim tugas</button></div>
+  </section>
+
+  <!-- PROSES -->
+  <section class="s" id="p4">
+    <div class="steps"><span>Langkah 4 dari 4</span><i><b style="width:100%"></b></i></div>
+    <div id="load" style="text-align:center"><div class="spin"></div><h3>Mengirim tugasmu…</h3><p class="mut">Jangan tutup halaman ini.</p></div>
+    <div id="done" hidden>
+      <div class="stamp">Diterima</div>
+      <p><b id="bukti"></b></p>
+      <div class="big" id="semangat"></div>
+      <p style="margin-top:12px" id="sehat"></p>
+      <div class="stack"><button class="btn" onclick="lihatNilai()">Lihat nilai saya</button><button class="btn ghost" onclick="kirimLagi()">Kirim tugas lain</button><button class="btn ghost" onclick="home()">Selesai</button></div>
+    </div>
+    <div id="fail" hidden>
+      <h3>Tugas belum terkirim</h3><p class="err" id="failMsg"></p><p class="mut">Fotomu masih tersimpan. Kamu tidak perlu memilihnya lagi.</p>
+      <div class="row"><button class="btn ghost" onclick="go(3)">Kembali</button><button class="btn" onclick="proses()">Coba lagi</button></div>
+    </div>
+  </section>
+
+  <!-- NILAI MURID -->
+  <section class="s" id="n">
+    <h2 id="nJudul">Nilai kamu</h2><div id="nList"></div>
+    <div class="stack"><button class="btn ghost" onclick="mulai('kirim')">Kirim tugas</button></div>
+  </section>
+
+  <!-- GURU -->
+  <section class="s" id="g1">
+    <h2>Mode Guru</h2>
+    <label>PIN guru<div class="pin"><input id="gpin" type="password" autocomplete="off" maxlength="20" inputmode="numeric"><button class="eye" type="button" onclick="const i=$('#gpin');i.type=i.type==='password'?'text':'password'">Lihat</button></div></label>
+    <div class="row"><button class="btn ghost" onclick="home()">Batal</button><button class="btn" onclick="guruMasuk()">Masuk</button></div>
+  </section>
+  <section class="s" id="g2">
+    <h2>Siapa nama Anda?</h2>
+    <label>Nama guru<select id="gnama"></select></label>
+    <div class="row"><button class="btn ghost" onclick="guruKeluar()">Keluar</button><button class="btn" onclick="guruPilih()">Lanjut</button></div>
+  </section>
+  <section class="s" id="g3">
+    <h2 id="gHalo"></h2><p class="mut">Pilih kelas yang ingin dinilai.</p><div id="gKelas"></div>
+    <div class="row"><button class="btn ghost" onclick="show('g2')">Ganti guru</button><button class="btn ghost" onclick="guruKeluar()">Keluar</button></div>
+  </section>
+  <section class="s" id="g4">
+    <button class="top" style="border:0;background:none;color:var(--teal);font:600 14px inherit;font-family:inherit;padding:0 0 10px;cursor:pointer" onclick="guruBukaKelasList()">← Kembali ke kelas</button>
+    <h2 id="g4t"></h2>
+    <label>Tampilkan<select id="gfilter" onchange="renderTugas()"><option value="semua">Semua</option><option value="belum">Belum dinilai</option><option value="perbaikan">Perlu perbaikan</option></select></label>
+    <div id="gList"></div>
+  </section>
+  <section class="s" id="g5">
+    <button style="border:0;background:none;color:var(--teal);font:600 14px inherit;font-family:inherit;padding:0 0 10px;cursor:pointer" onclick="renderTugas();show('g4')">← Daftar tugas</button>
+    <h2 id="g5t"></h2><div class="car" id="g5car"></div><p class="mut" id="g5hint">Ketuk foto untuk memperbesar. Cubit atau ketuk dua kali untuk zoom.</p>
+    <div id="g5info" class="mut"></div>
+    <label style="margin-top:12px">Nilai (0 sampai 100)<input id="gnilai" type="number" inputmode="decimal" min="0" max="100" step="any"></label>
+    <div class="row"><button class="btn" onclick="simpanNilai()">Simpan nilai</button><button class="btn warn" onclick="perbaikan()">Perlu perbaikan</button></div>
+    <div class="row"><button class="btn ghost" onclick="geser(-1)">← Sebelumnya</button><button class="btn ghost" onclick="geser(1)">Berikutnya →</button></div>
+  </section>
+</div>
+<div id="busy"><div class="spin"></div><span id="busyT">Memproses…</span></div>
+<div id="toast"></div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const titleCase=s=>s.trim().replace(/\s+/g,' ').toLowerCase().replace(/(^|[\s\-'.])(\p{L})/gu,(m,a,b)=>a+b.toUpperCase());
+const fmt=i=>i?new Date(i).toLocaleString('id-ID',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}):'';
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const SEMANGAT=['Satu tugas selesai, satu langkah lebih dekat ke cita-citamu. Terus semangat!','Rajin pangkal pandai. Kamu sudah melakukannya dengan baik hari ini!','Tidak ada usaha yang sia-sia. Bangga dengan kerja kerasmu!','Sedikit demi sedikit, lama-lama menjadi bukit. Lanjutkan!','Kamu hebat sudah mengumpulkan tugas. Pertahankan ya!'];
+const SEHAT=['Jaga kesehatan ya: makan teratur, minum air putih, dan istirahat cukup.','Jangan begadang. Tidur yang cukup membuat belajar lebih mudah masuk.','Cuci tangan, makan bergizi, dan jangan lupa olahraga ringan.','Matamu perlu istirahat juga. Jauhkan HP sebentar dan lihat yang jauh.'];
+let cfg=null,mode='kirim',me=null,F={mapel:'',guru:'',catatan:''},fotos=[],ulang=false,NL=[];
+let G={token:null,guru:'',kelas:'',list:[],view:[],i:0},idle;
+
+const API_URL='https://script.google.com/macros/s/AKfycbz2EUskyQcmmaFg2FOTZTQY3gf05NxY__Wkz0XNymh1svxYm4QBJkxPt--ZndWlpwOztA/exec'; // contoh: https://script.google.com/macros/s/AKfycb.../exec
+async function run(fn,...args){
+  const gagal=(m,biz)=>Object.assign(new Error(m),{biz});
+  if(!/^https:\/\//.test(API_URL))throw gagal('Alamat server belum diisi di index.html.',true);
+  let r;
+  try{
+    r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn,args})});
+    r=await r.json();
+  }catch(e){throw gagal('Tidak bisa terhubung. Periksa sinyal internet.',false);}
+  if(r.ok)return r.data;
+  let m=String(r.msg||'Terjadi gangguan.').replace(/^Error:\s*/,'');
+  const biz=m[0]==='§';
+  throw gagal(biz?m.slice(1):m,biz);
+}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3200);}
+function busy(m){const b=$('#busy');if(m){$('#busyT').textContent=m;b.style.display='flex';}else b.style.display='none';}
+function modal(html){closeModal();const m=document.createElement('div');m.className='ov';m.id='modal';m.innerHTML='<div class="box">'+html+'</div>';document.body.appendChild(m);return new Promise(ok=>{m.onclick=e=>{const b=e.target.closest('[data-v]');if(b)ok(b.dataset.v);};});}
+function closeModal(){const m=$('#modal');if(m)m.remove();}
+const btns=a=>'<div class="row">'+a.map(([v,t,c])=>`<button class="btn ${c||''}" data-v="${v}">${t}</button>`).join('')+'</div>';
+const pinIn=(id,label,max=6)=>`<label>${label}<div class="pin"><input id="${id}" type="password" inputmode="numeric" autocomplete="off" maxlength="${max}" oninput="this.value=this.value.replace(/\\D/g,'')"><button type="button" class="eye" onclick="const i=this.previousElementSibling;i.type=i.type==='password'?'text':'password'">Lihat</button></div></label>`;
+
+/* ---------- Navigasi ---------- */
+function show(id){document.querySelectorAll('.s').forEach(s=>s.classList.toggle('on',s.id===id));$('#homeBtn').hidden=(id==='home');window.scrollTo(0,0);}
+function home(){closeModal();if(G.token)guruKeluar(true);show('home');}
+function go(n){
+  if(n===2){$('#mapel').value=F.mapel||'';$('#guru').value=F.guru||'';}
+  if(n===3)renderFoto();
+  show('p'+n);
+}
+function mulai(m){
+  mode=m;
+  if(m==='kirim'){
+    if(cfg&&!cfg.buka)return toast('Pengumpulan tugas sedang ditutup.');
+    F={mapel:'',guru:'',catatan:''};fotos=[];ulang=false;
+  }
+  $('#t1').textContent=m==='kirim'?'Siapa kamu?':'Cek nilai: siapa kamu?';
+  $('#st1').hidden=m!=='kirim';
+  if(me){$('#nama').value=me.nama;$('#kelas').value=me.kelas;}
+  show('p1');
+}
+
+/* ---------- Identitas & akun ---------- */
+async function lanjut1(){
+  const nama=titleCase($('#nama').value),kelas=$('#kelas').value;
+  if(nama.length<3)return toast('Isi nama lengkapmu dulu.');
+  if(!kelas)return toast('Pilih kelas dulu.');
+  $('#nama').value=nama;
+  const v=await modal(`<h3>Data sudah benar?</h3><p class="big">${esc(nama)}<br>Kelas ${esc(kelas)}</p>${btns([['x','Periksa lagi','ghost'],['ok','Sudah benar']])}`);
+  if(v!=='ok')return closeModal();
+  closeModal();busy('Memeriksa akun…');
+  try{
+    const r=await run('cekAkun',nama,kelas);busy();
+    const pin=r.status==='ada'?await mintaPin(nama,kelas):await akunBaru(nama,kelas,r.status==='reset');
+    if(!pin)return;
+    me={nama,kelas,pin};
+    if(mode==='nilai')return tampilNilai();
+    await cekPerbaikan();
+  }catch(e){busy();closeModal();toast(e.message);}
+}
+async function mintaPin(nama,kelas){
+  let err='';
+  for(;;){
+    const v=await modal(`<h3>Masukkan PIN</h3><p>Akun: <b>${esc(nama)}</b>, kelas ${esc(kelas)}</p>${err?`<p class="err">${esc(err)}</p>`:''}${pinIn('pin','PIN 6 angka')}<p class="mut">Lupa PIN? Minta gurumu mereset.</p>${btns([['x','Batal','ghost'],['ok','Masuk']])}`);
+    if(v!=='ok'){closeModal();return null;}
+    const pin=$('#pin').value;closeModal();busy('Memeriksa PIN…');
+    try{await run('masukMurid',nama,kelas,pin);busy();return pin;}catch(e){busy();err=e.message;}
+  }
+}
+async function akunBaru(nama,kelas,reset){
+  const msg=reset?`<p>Akunmu direset. Buat PIN baru untuk <b>${esc(nama)}</b>.</p>`:
+   `<h3>⚠ Perhatian!</h3><p>Nama <b>"${esc(nama)}"</b> di kelas ${esc(kelas)} akan menjadi <b>AKUNMU SELAMANYA</b>.</p><p>Pastikan ejaan sudah benar. Mulai sekarang kamu harus menulis nama yang sama persis setiap kali masuk. Nama tidak bisa diganti sendiri.</p>`;
+  if(await modal(msg+btns([['x','Periksa lagi','ghost'],['ok','Ya, ini nama saya']]))!=='ok'){closeModal();return null;}
+  let err='';
+  for(;;){
+    const v=await modal(`<h3>Buat PIN</h3>${err?`<p class="err">${esc(err)}</p>`:''}${pinIn('p1','PIN 6 angka')}${pinIn('p2','Ketik ulang PIN')}<p class="mut">Jangan beri tahu PIN ke teman, dan ingat baik-baik.</p>${btns([['x','Batal','ghost'],['ok','Simpan PIN']])}`);
+    if(v!=='ok'){closeModal();return null;}
+    const a=$('#p1').value,b=$('#p2').value;
+    if(!/^\d{6}$/.test(a)){err='PIN harus 6 angka.';continue;}
+    if(a!==b){err='Kedua PIN tidak sama.';continue;}
+    closeModal();busy('Membuat akun…');
+    try{await run('buatAkun',nama,kelas,a);busy();return a;}catch(e){busy();err=e.message;}
+  }
+}
+async function cekPerbaikan(){
+  busy('Memeriksa tugasmu…');let l=[];
+  try{l=await run('daftarNilai',me.nama,me.kelas,me.pin);}catch(e){}
+  busy();l=l.filter(x=>x.status==='perbaikan');
+  if(!l.length)return go(2);
+  const v=await modal(`<h3>Ada tugas yang perlu diperbaiki</h3>${l.map((x,i)=>`<div class="note"><b>${esc(x.mapel)}</b><br><span class="mut">${esc(x.guru)}</span><br>Alasan: ${esc(x.alasan)}.<br><button class="btn sm warn" data-v="u${i}">Upload ulang</button></div>`).join('')}${btns([['n','Kirim tugas baru','ghost']])}`);
+  closeModal();
+  if(v[0]==='u')ulangDari(l[+v.slice(1)]);else go(2);
+}
+function ulangDari(x){mode='kirim';F={mapel:x.mapel,guru:x.guru,catatan:''};fotos=[];ulang=true;go(3);}
+
+/* ---------- Mapel, foto, kirim ---------- */
+async function lanjut2(){
+  const m=$('#mapel').value,g=$('#guru').value;
+  if(!m||!g)return toast('Pilih mapel dan guru dulu.');
+  F.mapel=m;F.guru=g;
+  const v=await modal(`<h3>Mapel dan guru sudah benar?</h3><p class="big">${esc(m)}<br>${esc(g)}</p>${btns([['x','Periksa lagi','ghost'],['ok','Sudah benar']])}`);
+  closeModal();if(v==='ok')go(3);
+}
+$('#file').addEventListener('change',async e=>{
+  const fs=[...e.target.files];e.target.value='';
+  const sisa=5-fotos.length;if(!fs.length)return;
+  if(fs.length>sisa)toast('Maksimal 5 foto. Sisanya diabaikan.');
+  busy('Menyiapkan foto…');
+  for(const f of fs.slice(0,sisa)){try{fotos.push(await kompres(f));}catch(x){toast('Satu foto gagal dibaca.');}}
+  busy();renderFoto();
+});
+async function kompres(file){
+  let b;try{b=await createImageBitmap(file,{imageOrientation:'from-image'});}catch(e){b=await createImageBitmap(file);}
+  const s=Math.min(1,1600/Math.max(b.width,b.height)),c=document.createElement('canvas');
+  c.width=Math.round(b.width*s);c.height=Math.round(b.height*s);
+  const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(b,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',.8);
+}
+function renderFoto(){
+  $('#ringkas').innerHTML=`<dl><dt>Nama</dt><dd>${esc(me&&me.nama)}</dd><dt>Kelas</dt><dd>${esc(me&&me.kelas)}</dd><dt>Mapel</dt><dd>${esc(F.mapel)}</dd><dt>Guru</dt><dd>${esc(F.guru)}</dd></dl>`+(ulang?'<p class="mut" style="margin:10px 0 0">Ini upload ulang. Foto lama akan diarsipkan.</p>':'');
+  $('#thumbs').innerHTML=fotos.map((f,i)=>`<div class="th"><img src="${f}" alt="Foto ${i+1}"><button onclick="hapusFoto(${i})" aria-label="Hapus foto ${i+1}">×</button></div>`).join('')+(fotos.length<5?'<button class="add" onclick="$(\'#file\').click()">+ Tambah foto</button>':'');
+  $('#infoFoto').textContent=fotos.length+' dari 5 foto. Foto otomatis dikecilkan agar hemat kuota.';
+  $('#catatan').value=F.catatan||'';
+}
+function hapusFoto(i){fotos.splice(i,1);renderFoto();}
+async function kirim(){
+  if(!fotos.length)return toast('Tambahkan minimal 1 foto.');
+  F.catatan=$('#catatan').value.trim();
+  const v=await modal(`<h3>Kirim sekarang?</h3><div class="sum"><dl><dt>Nama</dt><dd>${esc(me.nama)}</dd><dt>Kelas</dt><dd>${esc(me.kelas)}</dd><dt>Mapel</dt><dd>${esc(F.mapel)}</dd><dt>Guru</dt><dd>${esc(F.guru)}</dd><dt>Foto</dt><dd>${fotos.length} file</dd></dl></div><div class="warnbox" style="margin-top:0">Tugas yang sudah terkirim tidak bisa diubah, kecuali guru meminta perbaikan.</div>${btns([['x','Batal','ghost'],['ok','Kirim sekarang']])}`);
+  closeModal();if(v!=='ok')return;
+  go(4);proses();
+}
+async function proses(){
+  $('#load').hidden=false;$('#done').hidden=true;$('#fail').hidden=true;
+  let last;
+  for(let i=0;i<3;i++){
+    try{
+      const r=await run('kirimTugas',{nama:me.nama,kelas:me.kelas,pin:me.pin,mapel:F.mapel,guru:F.guru,catatan:F.catatan,fotos});
+      return sukses(r);
+    }catch(e){
+      last=e;
+      if(i>0&&/sudah mengirim/.test(e.message))return sukses({waktu:new Date().toISOString()});
+      if(e.biz)break;
+      await wait(1500*(i+1));
+    }
+  }
+  $('#load').hidden=true;$('#fail').hidden=false;$('#failMsg').textContent=last?last.message:'Terjadi gangguan.';
+}
+function sukses(r){
+  $('#load').hidden=true;$('#done').hidden=false;
+  $('#bukti').textContent='Tugas '+F.mapel+' diterima pada '+fmt(r.waktu)+'.';
+  $('#semangat').textContent=SEMANGAT[Math.floor(Math.random()*SEMANGAT.length)];
+  $('#sehat').textContent=SEHAT[Math.floor(Math.random()*SEHAT.length)];
+  fotos=[];ulang=false;
+}
+function kirimLagi(){mode='kirim';F={mapel:'',guru:'',catatan:''};fotos=[];ulang=false;go(2);}
+function lihatNilai(){mode='nilai';tampilNilai();}
+
+/* ---------- Nilai murid ---------- */
+async function tampilNilai(){
+  show('n');$('#nJudul').textContent='Nilai '+me.nama+' ('+me.kelas+')';
+  $('#nList').innerHTML='<p class="mut">Memuat…</p>';
+  try{
+    NL=await run('daftarNilai',me.nama,me.kelas,me.pin);
+    $('#nList').innerHTML=NL.length?NL.map((x,i)=>{
+      const b=x.status==='nilai'?`<span class="badge n">Nilai: ${esc(x.nilai)}</span>`:x.status==='perbaikan'?`<span class="badge p">Perlu perbaikan</span><br><small>Alasan: ${esc(x.alasan)}</small><br><button class="btn sm warn" onclick="ulangDari(NL[${i}])">Upload ulang</button>`:'<span class="badge">Belum dinilai</span>';
+      return `<div class="card st-${x.status}" style="cursor:default"><div class="in"><b>${esc(x.mapel)}</b><small>${esc(x.guru)}<br>${fmt(x.waktu)}</small><br>${b}</div></div>`;
+    }).join(''):'<p>Belum ada tugas yang kamu kirim.</p>';
+  }catch(e){$('#nList').innerHTML=`<p class="err">${esc(e.message)}</p>`;}
+}
+
+/* ---------- Mode guru ---------- */
+function guruAwal(){$('#gpin').value='';show('g1');}
+async function guruMasuk(){
+  const pin=$('#gpin').value.trim();if(!pin)return toast('Masukkan PIN.');
+  busy('Memeriksa PIN…');
+  try{const r=await run('guruMasuk',pin);G.token=r.token;busy();$('#gpin').value='';resetIdle();show('g2');}
+  catch(e){busy();toast(e.message);}
+}
+function guruKeluar(diam){G.token=null;clearTimeout(idle);if(!diam){show('home');toast('Kamu sudah keluar dari Mode Guru.');}}
+function resetIdle(){clearTimeout(idle);if(G.token)idle=setTimeout(()=>{guruKeluar(true);show('home');toast('Sesi guru berakhir. Masuk lagi dengan PIN.');},20*60000);}
+['click','touchstart'].forEach(e=>document.addEventListener(e,resetIdle,{passive:true}));
+async function gr(fn,...a){try{return await run(fn,G.token,...a);}catch(e){if(/Sesi berakhir/.test(e.message)){guruKeluar(true);show('home');}throw e;}}
+async function guruPilih(){
+  G.guru=$('#gnama').value;if(!G.guru)return toast('Pilih nama Anda.');
+  $('#gHalo').textContent='Halo, '+G.guru;
+  guruBukaKelasList();
+}
+async function guruBukaKelasList(){
+  show('g3');$('#gKelas').innerHTML='<p class="mut">Memuat kelas…</p>';
+  try{
+    const l=await gr('guruKelas',G.guru);
+    $('#gKelas').innerHTML=l.length?l.map(k=>`<button class="kelas" onclick="guruKelasBuka('${esc(k.kelas)}')"><b>${esc(k.kelas)}</b>${k.belum?`<span class="w">${k.belum} belum dinilai</span>`:'<span>Semua sudah dinilai ✓</span>'}</button>`).join(''):'<p>Belum ada tugas yang masuk.</p>';
+  }catch(e){$('#gKelas').innerHTML=`<p class="err">${esc(e.message)}</p>`;}
+}
+async function guruKelasBuka(k){
+  G.kelas=k;$('#g4t').textContent='Kelas '+k;$('#gfilter').value='semua';
+  show('g4');$('#gList').innerHTML='<p class="mut">Memuat tugas…</p>';
+  try{G.list=await gr('guruTugas',G.guru,k);renderTugas();}catch(e){$('#gList').innerHTML=`<p class="err">${esc(e.message)}</p>`;}
+}
+const urut={belum:0,perbaikan:1,nilai:2};
+function renderTugas(){
+  const f=$('#gfilter').value;
+  G.view=G.list.filter(x=>f==='semua'||x.status===f).sort((a,b)=>urut[a.status]-urut[b.status]||(a.waktu<b.waktu?-1:1));
+  $('#gList').innerHTML=G.view.length?G.view.map((x,i)=>{
+    const b=x.status==='nilai'?`<span class="badge n">Nilai: ${esc(x.nilai)}</span>`:x.status==='perbaikan'?'<span class="badge p">Perlu perbaikan</span>':'<span class="badge">Belum dinilai</span>';
+    return `<button class="card st-${x.status}" onclick="bukaTugas(${i})"><div class="ph">${x.ids[0]?`<img data-id="${x.ids[0]}" alt="">`:''}</div><div class="in"><b>${esc(x.nama)}</b><small>${esc(x.mapel)}<br>${fmt(x.waktu)}</small><br>${b}</div></button>`;
+  }).join(''):'<p>Tidak ada tugas pada tampilan ini.</p>';
+  document.querySelectorAll('#gList img[data-id]').forEach(im=>io.observe(im));
+}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);const im=e.target;foto(im.dataset.id,true).then(s=>im.src=s).catch(()=>{});}),{rootMargin:'200px'});
+const fc={},fq=[];let fa=0;
+function foto(id,kecil){const k=id+(kecil?'k':'');if(fc[k])return fc[k];fc[k]=new Promise((ok,no)=>{fq.push({id,kecil,ok,no});pump();});fc[k].catch(()=>{delete fc[k];});return fc[k];}
+function pump(){while(fa<3&&fq.length){const j=fq.shift();fa++;gr('guruFoto',j.id,!!j.kecil).then(j.ok,j.no).finally(()=>{fa--;pump();});}}
+function bukaTugas(i){
+  G.i=i;const x=G.view[i];
+  $('#g5t').textContent=x.nama+' · '+x.mapel;
+  $('#g5info').innerHTML=`Dikirim: ${fmt(x.waktu)}${x.catatan?`<br>Catatan murid: "${esc(x.catatan)}"`:''}${x.status==='perbaikan'?`<br><b style="color:var(--warn)">Perlu perbaikan: ${esc(x.alasan)}</b>`:''}<br>Urutan ${i+1} dari ${G.view.length}`;
+  $('#gnilai').value=x.status==='nilai'?x.nilai:'';
+  const car=$('#g5car');car.innerHTML=x.ids.map(()=>'<img alt="Foto tugas">').join('');
+  [...car.children].forEach((im,k)=>{foto(x.ids[k],false).then(s=>{im.src=s;im.onclick=()=>zoom(s);}).catch(()=>{im.alt='Foto gagal dimuat';});});
+  show('g5');
+}
+function geser(d){const n=G.i+d;if(n<0||n>=G.view.length)return toast(d<0?'Ini tugas pertama.':'Ini tugas terakhir.');bukaTugas(n);}
+function lanjutBelum(){
+  const n=G.view.length;
+  for(let k=1;k<n;k++){const j=(G.i+k)%n;if(G.view[j].status==='belum')return bukaTugas(j);}
+  toast('Semua tugas di kelas ini sudah ditandai.');renderTugas();show('g4');
+}
+async function simpanNilai(){
+  const x=G.view[G.i],v=$('#gnilai').value.trim(),n=Number(v);
+  if(v===''||isNaN(n)||n<0||n>100)return toast('Nilai harus angka 0 sampai 100.');
+  busy('Menyimpan nilai…');
+  try{await gr('guruNilai',G.guru,G.kelas,x.row,n);busy();x.status='nilai';x.nilai=n;x.alasan='';toast('Nilai tersimpan.');lanjutBelum();}
+  catch(e){busy();toast(e.message);}
+}
+async function perbaikan(){
+  const x=G.view[G.i];
+  const v=await new Promise(ok=>{
+    modal(`<h3>Perlu perbaikan</h3><p class="mut">Pilih alasan. Murid akan melihatnya dan bisa mengunggah ulang.</p>${cfg.alasan.map((a,i)=>`<label class="radio"><input type="radio" name="al" value="${i}">${esc(a)}</label>`).join('')}<textarea id="lain" maxlength="100" placeholder="Tulis alasan singkat" hidden></textarea>${btns([['x','Batal','ghost'],['ok','Konfirmasi','warn']])}`);
+    const m=$('#modal'),pilih=()=>m.querySelector('input[name=al]:checked');
+    m.addEventListener('change',()=>{const r=pilih();$('#lain').hidden=!(r&&/^lainnya/i.test(cfg.alasan[r.value]));});
+    m.addEventListener('click',e=>{
+      const b=e.target.closest('[data-v]');if(!b)return;
+      if(b.dataset.v==='x')return ok(null);
+      const r=pilih();if(!r)return toast('Pilih alasan dulu.');
+      let a=cfg.alasan[r.value];
+      if(/^lainnya/i.test(a)){const t=$('#lain').value.trim();if(!t)return toast('Tulis alasan singkat.');a=t;}
+      ok(a);
+    });
+  });
+  closeModal();if(!v)return;
+  busy('Menyimpan…');
+  try{await gr('guruPerbaikan',G.guru,G.kelas,x.row,v);busy();x.status='perbaikan';x.alasan=v;x.nilai='';toast('Ditandai perlu perbaikan.');lanjutBelum();}
+  catch(e){busy();toast(e.message);}
+}
+
+/* ---------- Zoom foto ---------- */
+function zoom(src){
+  const o=document.createElement('div');o.className='zoom';o.innerHTML=`<img src="${src}" alt="Foto tugas"><button class="x">Tutup</button>`;
+  document.body.appendChild(o);
+  const im=o.firstChild,P=new Map();let s=1,x=0,y=0,d0=0,s0=1,last=0;
+  const ap=()=>{im.style.transform=`translate(${x}px,${y}px) scale(${s})`;};
+  o.querySelector('.x').onclick=()=>o.remove();
+  im.onpointerdown=e=>{
+    im.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.clientX,e.clientY]);
+    if(P.size===2){const[a,b]=[...P.values()];d0=Math.hypot(a[0]-b[0],a[1]-b[1]);s0=s;}
+    const t=Date.now();if(P.size===1&&t-last<300){s=s>1?1:2.5;x=y=0;ap();}last=t;
+  };
+  im.onpointermove=e=>{
+    const p=P.get(e.pointerId);if(!p)return;
+    if(P.size===2){P.set(e.pointerId,[e.clientX,e.clientY]);const[a,b]=[...P.values()];s=Math.min(6,Math.max(1,s0*Math.hypot(a[0]-b[0],a[1]-b[1])/d0));}
+    else if(s>1){x+=e.clientX-p[0];y+=e.clientY-p[1];P.set(e.pointerId,[e.clientX,e.clientY]);}
+    ap();
+  };
+  im.onpointerup=im.onpointercancel=e=>{P.delete(e.pointerId);if(s<=1){x=y=0;ap();}};
+}
+
+/* ---------- Mulai ---------- */
+function isi(id,arr,ph){$(id).innerHTML=(ph?`<option value="">${ph}</option>`:'')+arr.map(a=>`<option>${esc(a)}</option>`).join('');}
+(async function(){
+  busy('Memuat…');
+  try{
+    cfg=await run('getConfig');
+    isi('#kelas',cfg.kelas,'Pilih kelas');isi('#mapel',cfg.mapel,'Pilih mata pelajaran');
+    isi('#guru',cfg.guru,'Pilih nama guru');isi('#gnama',cfg.guru,'Pilih nama Anda');
+    $('#tutup').hidden=cfg.buka;
+  }catch(e){toast('Gagal memuat data: '+e.message);}
+  busy();
+})();
+</script>
+</body>
+</html>
