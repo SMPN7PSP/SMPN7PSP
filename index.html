@@ -186,7 +186,7 @@ const SEHAT=['Jaga kesehatan ya: makan teratur, minum air putih, dan istirahat c
 let cfg=null,mode='kirim',me=null,F={mapel:'',guru:'',catatan:''},fotos=[],ulang=false,NL=[];
 let G={token:null,guru:'',kelas:'',list:[],view:[],i:0},idle;
 
-const API_URL='https://script.google.com/macros/s/AKfycbz2EUskyQcmmaFg2FOTZTQY3gf05NxY__Wkz0XNymh1svxYm4QBJkxPt--ZndWlpwOztA/exec'; // contoh: https://script.google.com/macros/s/AKfycb.../exec
+const API_URL='https://script.google.com/macros/s/AKfycbySkPtcIuLWFSI-RZczjgpjETDdXmBkVK9S1NaC49Ge6PtDlS6NVw5xLR3pafjsjfoW/exec'; // contoh: https://script.google.com/macros/s/AKfycb.../exec
 async function run(fn,...args){
   const gagal=(m,biz)=>Object.assign(new Error(m),{biz});
   if(!/^https:\/\//.test(API_URL))throw gagal('Alamat server belum diisi di index.html.',true);
@@ -260,9 +260,9 @@ async function akunBaru(nama,kelas,reset){
   if(await modal(msg+btns([['x','Periksa lagi','ghost'],['ok','Ya, ini nama saya']]))!=='ok'){closeModal();return null;}
   let err='';
   for(;;){
-    const v=await modal(`<h3>Buat PIN</h3>${err?`<p class="err">${esc(err)}</p>`:''}${pinIn('p1','PIN 6 angka')}${pinIn('p2','Ketik ulang PIN')}<p class="mut">Jangan beri tahu PIN ke teman, dan ingat baik-baik.</p>${btns([['x','Batal','ghost'],['ok','Simpan PIN']])}`);
+    const v=await modal(`<h3>Buat PIN</h3>${err?`<p class="err">${esc(err)}</p>`:''}${pinIn('np1','PIN 6 angka')}${pinIn('np2','Ketik ulang PIN')}<p class="mut">Jangan beri tahu PIN ke teman, dan ingat baik-baik.</p>${btns([['x','Batal','ghost'],['ok','Simpan PIN']])}`);
     if(v!=='ok'){closeModal();return null;}
-    const a=$('#p1').value,b=$('#p2').value;
+    const a=$('#np1').value,b=$('#np2').value;
     if(!/^\d{6}$/.test(a)){err='PIN harus 6 angka.';continue;}
     if(a!==b){err='Kedua PIN tidak sama.';continue;}
     closeModal();busy('Membuat akun…');
